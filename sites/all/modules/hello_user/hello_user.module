@@ -1,0 +1,26 @@
+<?php
+
+function hello_user_menu() {
+    $items = array();
+    $items['new_user'] = array(
+        'title' => 'Hello New User',
+        'page callback' => 'welcome_user',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    return $items;
+}
+
+function welcome_user() {
+    return '<p>Welcome New User!</p>';
+}
+
+function hello_user_user_insert(&$edit, $account, $category) {
+
+    // echo '<pre>';
+    // var_dump($edit);
+    // echo '</pre>';
+    // exit;
+
+    $_GET['destination'] = 'new_user';
+}

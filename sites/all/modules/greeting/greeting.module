@@ -25,7 +25,14 @@ function say_farewell() {
     return '<p>Farewell</p>';
 }
 
-function greeting_user_login() {
+function greeting_user_login(&$edit, $account) {
+
+    // Use the Below to Check Contents of $account or $edit
+    // echo '<pre>';
+    // var_dump($edit);
+    // echo '</pre>';
+    // exit;
+
     $_GET['destination'] = 'hello_friend';
 }
 

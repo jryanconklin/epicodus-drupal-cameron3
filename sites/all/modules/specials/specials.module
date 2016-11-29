@@ -3,10 +3,10 @@
 function specials_menu() {
     $items = array();
     $items['specials'] = array(
-        'title' => "Cameron's Daily Specials",
+        'title' => 'Cameron\'s Daily Specials',
         'page callback' => 'specials_display',
         'access callback' => TRUE,
-        'type' => MENU_NORMAL_ITEM,
+        'type' => MENU_CALLBACK,
     );
     return $items;
 }

@@ -1,0 +1,20 @@
+<?php
+
+function pet_menu() {
+    $items = array();
+    $items['pet'] = array(
+        'title' => 'My Pet',
+        'page callback' => 'pet_display',
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+    return $items;
+}
+
+function pet_display() {
+    return '
+    <h2>Charlie</h2>
+    <img class="img-responsive img-rounded" src="/sites/all/modules/pet/images/cat.jpg" alt="my pet">
+    <p>Charlie is a demon cat.</p>
+    ';
+}

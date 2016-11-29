@@ -245,15 +245,15 @@
  * @endcode
  */
 $databases = array (
-  'default' => 
+  'default' =>
   array (
-    'default' => 
+    'default' =>
     array (
       'database' => 'cameron_database',
       'username' => 'admin',
       'password' => 'admin',
-      'host' => 'localhost',
-      'port' => '',
+      'host' => php_sapi_name() == 'cli' ? '127.0.0.1' : 'localhost',
+      'port' => '8889',
       'driver' => 'mysql',
       'prefix' => '',
     ),

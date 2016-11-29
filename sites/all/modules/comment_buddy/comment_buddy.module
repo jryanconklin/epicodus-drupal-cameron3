@@ -1,0 +1,13 @@
+<?php
+
+function comment_buddy_comment_insert($comment) {
+    drupal_set_message("Thank you! Comment submitted!");
+}
+
+function comment_buddy_comment_update($comment) {
+    drupal_set_message("Your comment has been changed.");
+}
+
+function comment_buddy_comment_delete($comment) {
+    drupal_set_message("Comment deleted!");
+}

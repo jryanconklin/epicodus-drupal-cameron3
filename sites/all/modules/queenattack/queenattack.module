@@ -1,0 +1,73 @@
+<?php
+
+function queenattack_menu() {
+    $items['queenattack'] = array(
+        'title' => 'Calculate Queen Attack',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('queenattack_form'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+    $items['queenattack_success_page'] = array(
+        'title' => 'Success',
+        'page callback' => 'queenattack_success',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    return $items;
+}
+
+function queenattack_form() {
+    $form['queen_x'] = array(
+        '#title' => 'Queen X Coordinate',
+        '#type' => 'textfield',
+        '#description' => t('Please enter queen\'s x coordinate.'),
+    );
+    $form['queen_y'] = array(
+        '#title' => 'Queen Y Coordinate',
+        '#type' => 'textfield',
+        '#description' => t('Please enter queen\'s y coordinates.'),
+    );
+
+
+    $form['target_x'] = array(
+        '#title' => 'Target X Coordinate',
+        '#type' => 'textfield',
+        '#description' => t('Please enter target\'s x coordinate.'),
+    );
+    $form['target_y'] = array(
+        '#title' => 'Target Y Coordinate',
+        '#type' => 'textfield',
+        '#description' => t('Please enter target\'s y coordinates.'),
+    );
+
+
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Calculate If the Queen can Attack',
+    );
+
+    return $form;
+}
+
+function queenattack_form_submit($form, &$form_state) {
+
+    $queen_x = $form_state['values']['queen_x'];
+    $queen_y = $form_state['values']['queen_y'];
+    $target_x = $form_state['values']['target_x'];
+    $target_y = $form_state['values']['target_y'];
+
+    if (($target_x == $queen_x) || ($target_y == $queen_y) || (abs($queen_x - $target_x ) == abs($queen_y - $target_y))) {
+      $can_attack = "can attack";
+    } else {
+      $can_attack = "cannot attack";
+    }
+
+    $_SESSION['queenattack_output'] = $can_attack;
+    $form_state['redirect'] = 'queenattack_success_page';
+}
+
+function queenattack_success() {
+    $answer = $_SESSION['queenattack_output'];
+    return 'Based on your coordinates, the Queen ' . $answer . '.';
+}

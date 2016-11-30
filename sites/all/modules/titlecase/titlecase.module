@@ -1,0 +1,65 @@
+<?php
+
+function titlecase_menu() {
+    $items['titlecase'] = array(
+        'title' => 'Titlecase Me!',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('titlecase_form'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+        $items['titlecase_success_page'] = array(
+        'title' => 'Success',
+        'page callback' => 'titlecase_success',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    return $items;
+}
+
+function titlecase_form() {
+    $form['input_string'] = array(
+        '#title' => 'Words to Titlecase',
+        '#type' => 'textfield',
+        '#description' => t('What words do you want properly titlecased?'),
+    );
+
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Do It!',
+    );
+
+    return $form;
+}
+
+function titlecase_form_submit($form, &$form_state) {
+
+    $input_string = $form_state['values']['input_string'];
+
+    $designated_words = array("the","from","of","and","by","in","a","into","with");
+    $word_index = 0;
+    $split_array = explode(" ", $input_string);
+    $return_array = array();
+    foreach($split_array as $word) {
+      if (in_array($word, $designated_words) && $word_index != 0)
+      {
+        $processed_word = strtolower($word);
+      }
+      else
+      {
+        $processed_word = ucfirst(strtolower($word));
+      }
+      ++ $word_index;
+      array_push($return_array, $processed_word);
+    }
+    $titlecase_output = implode(" ", $return_array);
+
+    $_SESSION['titlecase_output'] = $titlecase_output;
+    $_SESSION['titlecase_original'] = $input_string;
+    $form_state['redirect'] = 'titlecase_success_page';
+}
+
+function titlecase_success() {
+    $output = $_SESSION['titlecase_original'] . '<br>becomes...<br>' . $_SESSION['titlecase_output'];
+    return $output;
+}

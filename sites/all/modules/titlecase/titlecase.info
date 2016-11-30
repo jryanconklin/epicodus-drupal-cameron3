@@ -1,0 +1,5 @@
+name = Title Case
+description = Converts input string of words into something presentably titular.
+package = Epicodus Examples
+core = 7.x
+files[] = titlecase.module

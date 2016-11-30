@@ -29,13 +29,36 @@ function greeting_user_login(&$edit, $account) {
 
     // Use the Below to Check Contents of $account or $edit
     // echo '<pre>';
-    // var_dump($edit);
+    // if (isset($account->roles[3])) {
+    //     echo 'is administrator';
+    // } else if (isset($account->roles[2])) {
+    //     echo 'is authenticated';
+    // }
     // echo '</pre>';
     // exit;
 
-    $_GET['destination'] = 'hello_friend';
+    if (isset($account->roles[3])) {
+        drupal_set_message('Welcome to the Admin View!');
+    } else {
+        drupal_set_message('Nice to see you!');
+    }
+
+    // $_GET['destination'] = 'hello_friend';
 }
 
-function greeting_user_logout() {
-    $_GET['destination'] = 'farewell';
+function greeting_user_logout($account) {
+
+    // echo '<pre>';
+    // var_dump($account);
+    // echo '</pre>';
+    // exit;
+
+// Currently Does Not Work
+    if (isset($account->roles[3])) {
+        drupal_set_message('Bye bye bye!');
+    } else {
+        drupal_set_message('Come back soon!');
+    }
+
+    // $_GET['destination'] = 'farewell';
 }

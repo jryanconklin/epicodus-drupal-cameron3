@@ -1,0 +1,5 @@
+name = Clock Angle
+description = Displays the angular distance between the hour and minute hands of an old school analog clock.
+package = Epicodus Examples
+core = 7.x
+files[] = clockangle.module

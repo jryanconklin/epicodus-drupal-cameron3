@@ -1,0 +1,63 @@
+<?php
+
+function clockangle_menu() {
+    $items['clockangle'] = array(
+        'title' => 'Calculate Angles of a Clock\'s Hands',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('clockangle_form'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+    $items['clockangle_success_page'] = array(
+        'title' => 'Success',
+        'page callback' => 'clockangle_success',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    return $items;
+}
+
+function clockangle_form() {
+    $form['hour_input'] = array(
+        '#title' => 'Hour',
+        '#type' => 'textfield',
+        '#description' => t('Please enter the hour.'),
+    );
+    $form['minute_input'] = array(
+        '#title' => 'Right number',
+        '#type' => 'textfield',
+        '#description' => t('Please enter the minutes.'),
+    );
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Calculate Clock Angle',
+    );
+
+    return $form;
+}
+
+function clockangle_form_submit($form, &$form_state) {
+    $hour_input = $form_state['values']['hour_input'];
+    $minute_input = $form_state['values']['minute_input'];
+
+    function getMinuteAngle($minute) {
+        return $minute * 6;
+    }
+    function getHourAngle($hour, $minute) {
+        return $hour * 30 + ($minute * 0.5);
+    }
+    function getAngleDifference($hour, $minute) {
+      $minuteAngle = getMinuteAngle($minute);
+      $hourAngle = getHourAngle($hour, $minute);
+      return abs($minuteAngle - $hourAngle);
+    }
+
+    $clockangle = getAngleDifference($hour_input, $minute_input);
+    $_SESSION['clockangle_output'] = $clockangle;
+    $form_state['redirect'] = 'clockangle_success_page';
+}
+
+function clockangle_success() {
+    $answer = $_SESSION['clockangle_output'];
+    return 'The angular distance between the hour and minute hands is: ' . $answer;
+}

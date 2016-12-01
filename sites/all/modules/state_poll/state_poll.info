@@ -1,0 +1,5 @@
+name = State Poll
+description = This Polls Users on Valuable Data for the State
+package = Epicodus Examples
+core = 7.x
+files[] = state_poll.module

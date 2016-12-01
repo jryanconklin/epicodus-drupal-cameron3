@@ -1,0 +1,56 @@
+<?php
+
+function state_poll_menu() {
+    $items['state poll'] = array(
+        'title' => 'Particpate in this Non-Threatening State Poll!',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('state_poll_form'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+    $items['state_poll_success_page'] = array(
+        'title' => 'Success! Your Data Has Been Recorded Citizen.',
+        'page callback' => 'state_poll_success',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    return $items;
+}
+
+function state_poll_form() {
+    $form['state'] = array(
+        '#title' => 'Enter Your State',
+        '#type' => 'textfield',
+        '#maxlength' => 2,
+    );
+
+    $form['ice_cream'] = array(
+        '#title' => 'What\'s your favorite ice cream flavor?',
+        '#type' => 'textfield',
+    );
+
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Submit to the State',
+    );
+    return $form;
+}
+
+// array('state1', )
+
+
+function state_poll_form_submit($form, &$form_state) {
+
+    $state = $form_state['values']['state'];
+    $ice_cream = $form_state['values']['ice_cream'];
+
+    $result = 'You live in ' . $state . ' and enjoy ' . $ice_cream . '. Thank you for your mandatory participation in this survey, citizen. Your information has been recorded in our national database.';
+
+    $_SESSION['state_poll_output'] = $result;
+    $form_state['redirect'] = 'state_poll_success_page';
+}
+
+function state_poll_success() {
+    $answer = $_SESSION['state_poll_output'];
+    return $answer;
+}

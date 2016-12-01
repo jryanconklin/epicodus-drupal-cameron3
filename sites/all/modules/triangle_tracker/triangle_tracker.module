@@ -1,0 +1,75 @@
+<?php
+
+function triangle_tracker_menu() {
+    $items['triangle tracker'] = array(
+        'title' => 'See if this is a Triangle',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('triangle_tracker_form'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+    $items['triangle_tracker_success_page'] = array(
+        'title' => 'Success',
+        'page callback' => 'triangle_tracker_success',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    return $items;
+}
+
+function triangle_tracker_form() {
+    $form['side_a'] = array(
+        '#title' => 'Side A',
+        '#type' => 'textfield',
+        '#description' => t('Please enter side A.'),
+        '#element_validate' => array('element_validate_integer_positive'),
+        '#required' => TRUE,
+    );
+    $form['side_b'] = array(
+        '#title' => 'Side B',
+        '#type' => 'textfield',
+        '#description' => t('Please enter side B.'),
+        '#element_validate' => array('element_validate_integer_positive'),
+        '#required' => TRUE,
+    );
+
+    $form['side_c'] = array(
+        '#title' => 'Side C',
+        '#type' => 'textfield',
+        '#description' => t('Please enter side C.'),
+        '#element_validate' => array('element_validate_integer_positive'),
+        '#required' => TRUE,
+    );
+
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Calculate If this is a triangle',
+    );
+
+    return $form;
+}
+
+function triangle_tracker_form_submit($form, &$form_state) {
+
+    $side_a = $form_state['values']['side_a'];
+    $side_b = $form_state['values']['side_b'];
+    $side_c = $form_state['values']['side_c'];
+
+    if (($side_a + $side_b <= $side_c) || ($side_a + $side_c <= $side_b) || ($side_c + $side_b <= $side_a)) {
+        $result = "not a";
+    } elseif ($side_a == $side_b && $side_b == $side_c) {
+        $result = "an equilateral";
+    } elseif (($side_a == $side_b && $side_b != $side_c) || ($side_a == $side_c && $side_b != $side_c) || ($side_b == $side_c && $side_b != $side_a)) {
+        $result = "an isocoles";
+    } else {
+        $result = "an obtuse";
+    }
+
+    $_SESSION['triangle_tracker_output'] = $result;
+    $form_state['redirect'] = 'triangle_tracker_success_page';
+}
+
+function triangle_tracker_success() {
+    $answer = $_SESSION['triangle_tracker_output'];
+    return 'Based on your sides, this is ' . $answer . ' triangle.';
+}

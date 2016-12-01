@@ -28,6 +28,8 @@ function rockpaperscissors_form() {
     $form['player_move'] = array(
         '#title' => 'Rock, Paper, or Scissors?',
         '#type' => 'textfield',
+        '#element_validate' => array('element_validate_move'),
+        '#required' => TRUE,
     );
 
     $form['submit'] = array(
@@ -38,8 +40,22 @@ function rockpaperscissors_form() {
     return $form;
 }
 
+function element_validate_move($element) {
+    $words = array('rock', 'paper', 'scissors');
+
+    $move = strtolower($element['#value']);
+    $move = trim($move);
+
+    if (!in_array($move, $words)) {
+        form_error($element, t('Enter Valid Move'));
+    }
+}
+
 function rockpaperscissors_form_submit($form, &$form_state) {
     $player_move = $form_state['values']['player_move'];
+
+    $player_move = strtolower($player_move);
+    $player_move = trim($player_move);
 
     if (!$_SESSION['player1']) {
         $_SESSION['player1'] = $player_move;
@@ -53,6 +69,13 @@ function rockpaperscissors_form_submit($form, &$form_state) {
 function rockpaperscissors_success() {
     $player_one = $_SESSION['player1'];
     $player_two = $_SESSION['player2'];
+
+    // echo '<pre>';
+    // var_dump($_SESSION['player1']);
+    // var_dump($_SESSION['player2']);
+    // echo '</pre>';
+    // exit;
+
 
     if ($player_one == $player_two) {
         $_SESSION['player1'] = null;

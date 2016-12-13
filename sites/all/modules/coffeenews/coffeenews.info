@@ -1,0 +1,5 @@
+name = Coffee News
+description = Display Coffee News with AJAX
+package = Epicodus Examples
+core = 7.x
+files[] = coffeenews.module

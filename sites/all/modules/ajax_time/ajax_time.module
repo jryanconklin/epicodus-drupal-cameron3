@@ -1,0 +1,67 @@
+<?php
+
+// From this Lesson http://codekarate.com/blog/drupal-7-javascript-ajax-framework-example-link
+
+/**
+* Implements hook_menu().
+*/
+function ajax_time_menu() {
+    $items['ajax-time'] = array(
+        'title' => 'Ajax Time',
+        'type' => MENU_NORMAL_ITEM,
+        'page callback' => 'ajax_time_page',
+        'access arguments' => array('access content'),
+    );
+
+    $items['my-ajax-time/%'] = array(
+        'title' => 'Ajax Time Callback',
+        'type' => MENU_CALLBACK,
+        'page callback' => 'ajax_time_callback',
+        'page arguments' => array(1),
+        'access arguments' => array('access content'),
+    );
+
+    return $items;
+}
+
+/**
+* Callback Function that Displays a Simple AJAX Powered Link
+*/
+
+function ajax_time_page() {
+    return array(
+        '#type' => 'link',
+        '#title' => t('Ajax Time'),
+        '#href' => 'my-ajax-time/nojs',
+        '#prefix' => '<div id="ajax-time">',
+        '#suffix' => '</div><div id="ajax-display"</div>',
+        '#ajax' => array(
+            'effect' => 'fade',
+        ),
+    );
+}
+
+/**
+* Ajax Callback to Display Current Time
+*/
+
+function ajax_time_callback($ajax) {
+
+    $time = t('The current time is: !time', array('!time' => date('Y-m-d H:i:s')));
+
+    if ($ajax == 'ajax') {
+        $commands = array();
+
+        $commands[] = ajax_command_replace('#ajax-display', "<div id='ajax-display'>" . $time . "</div>");
+
+        $commands[] = ajax_command_changed('#ajax-display');
+
+        $commands[] = ajax_command_invoke(NULL, 'ajax_time');
+
+        ajax_deliver(array('#type' => 'ajax', '#commands' => $commands));
+    } else {
+        return array(
+            '#markup' => $time,
+        );
+    }
+}

@@ -1,0 +1,6 @@
+name = Ajax Time
+description = Return the Time from Ajax Request
+package = Epicodus Examples
+core = 7.x
+files[] = ajax_time.module
+scripts[] = ajax_time.js

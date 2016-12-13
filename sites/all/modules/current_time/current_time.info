@@ -1,0 +1,5 @@
+name = Current Time
+description = Uses Ajax (for some reason) to display the current time.
+package = Epicodus Examples
+core = 7.x
+files[] = current_time.module

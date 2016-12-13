@@ -13,6 +13,8 @@ function coffeenews_menu() {
 function coffeenews_ajax_callback($js, $node_id) {
     $node = node_load($node_id);
 
+
+
     if ($js == 'nojs') {
         drupal_goto('node/' . $node->nid);
     }
@@ -22,6 +24,10 @@ function coffeenews_ajax_callback($js, $node_id) {
 
     $commands = array();
     $commands[] = ajax_command_html('#coffeenews-ajax-wrapper', $html);
+    echo "<pre>";
+    var_dump($commands);
+    echo "<pre>";
+    exit;
 
     print ajax_render($commands);
     exit;

@@ -1,0 +1,29 @@
+<?php
+
+function current_time_menu() {
+    $items = array();
+    $items['display_current_time/%'] = array(
+        'access arguments' => array('access content'),
+        'page arguments' => array(1),
+        'page callback' => 'display_current_time',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    return $items;
+}
+
+function display_current_time($js) {
+    $html = array(
+        'type' => 'link',
+    );
+    $html = '' .time();
+
+
+    $commands[] = ajax_command_html('#current-time-ajax-wrapper', $html);
+    // echo "<pre>";
+    // var_dump($commands);
+    // echo "<pre>";
+    // exit;
+    print ajax_render($commands);
+    exit;
+}
